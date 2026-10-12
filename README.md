@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
+
+# Push Notification
+
+<p>A minimal Next.js demo for subscribing to browser push notifications and sending a test notification with the Web Push API.</p>
+
+<p>
+  <a href="https://github.com/nosibbiswas22/push-notification/stargazers">
+    <img src="https://img.shields.io/github/stars/nosibbiswas22/push-notification?style=flat-square" alt="GitHub stars">
+  </a>
+  <a href="https://github.com/nosibbiswas22/push-notification/network/members">
+    <img src="https://img.shields.io/github/forks/nosibbiswas22/push-notification?style=flat-square" alt="GitHub forks">
+  </a>
+  <a href="https://github.com/nosibbiswas22/push-notification/issues">
+    <img src="https://img.shields.io/github/issues/nosibbiswas22/push-notification?style=flat-square" alt="GitHub issues">
+  </a>
+  <a href="https://nextjs.org">
+    <img src="https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js" alt="Next.js">
+  </a>
+  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Push_API">
+    <img src="https://img.shields.io/badge/Web_Push-API-4285F4?style=flat-square" alt="Web Push API">
+  </a>
+  <a href="https://github.com/nosibbiswas22/push-notification/blob/main/package.json">
+    <img src="https://img.shields.io/badge/Node.js-20%2B-339933?style=flat-square&logo=node.js" alt="Node.js 20 or later">
+  </a>
+</p>
+
+</div>
+
+## Overview
+
+This project demonstrates the basic browser push-notification flow:
+
+1. Register a service worker.
+2. Subscribe the browser with a VAPID public key.
+3. Save the subscription through a Next.js API route.
+4. Send a test notification from the server with `web-push`.
+
+> **Note:** Subscriptions are stored in memory for demonstration purposes and are lost whenever the server restarts. Use a database before deploying this pattern to production.
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) 16 with the App Router
+- [React](https://react.dev/) 19
+- [Web Push](https://github.com/web-push-libs/web-push)
+- Service Worker and Push API
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20 or later
+- A browser that supports the Push API
+
+### Installation
+
+Clone the repository, install dependencies, and create a local environment file:
+
+```bash
+git clone https://github.com/nosibbiswas22/push-notification.git
+cd push-notification
+npm install
+```
+
+Generate a VAPID key pair:
+
+```bash
+npx web-push generate-vapid-keys
+```
+
+Create `.env.local` in the project root:
+
+```env
+NEXT_PUBLIC_VAPID_PUBLIC_KEY=your_public_key
+VAPID_PRIVATE_KEY=your_private_key
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000), allow notifications, and then send a test notification.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Create a production build |
+| `npm run start` | Start the production server |
+| `npm run lint` | Run ESLint |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```text
+src/
+└── app/
+    ├── api/push/route.js   # Save subscriptions and send notifications
+    ├── page.js             # Subscribe and send-test controls
+    └── layout.js           # Application metadata and layout
+public/
+└── sw.js                   # Push event handler
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The app can be deployed to [Vercel](https://vercel.com/). Add the following environment variables to the deployment project before building:
 
-## Deploy on Vercel
+- `NEXT_PUBLIC_VAPID_PUBLIC_KEY`
+- `VAPID_PRIVATE_KEY`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+For production use, persist subscriptions in a database and add authentication around notification sending.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project does not currently include a license. Add one before distributing or reusing it publicly.
